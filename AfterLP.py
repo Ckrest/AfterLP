@@ -65,7 +65,6 @@ def findInfo(summonerName):
 async def testplayers():
     while True:
         await asyncio.sleep(seconds)
-        listOfPlayers[0] = ['ckrest', '_D-LLmRUfbmwAQa493vIQ9GrMKdkYQHqW9Z_J2OApkTGPzc', 'DIAMOND', 'IV', 32]
         for x in range(numberOfPlayers):
             testPlayerChange = findInfo(playerNames[x])
             if listOfPlayers[x][2] == testPlayerChange[2] and listOfPlayers[x][3] == testPlayerChange[3]:
