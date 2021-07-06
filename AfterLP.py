@@ -1,6 +1,7 @@
 from riotwatcher import LolWatcher
 import discord
 import asyncio
+from datetime import datetime
 
 
 
@@ -9,7 +10,7 @@ riotkey = ''
 #discord api bot key
 discordkey = ''
 #discord channel to post to
-discordchannel = ''
+discordchannel = 
 #set region to NA
 region = 'na1'
 #number of games tested
@@ -19,7 +20,7 @@ watcher = LolWatcher(riotkey)
 #define discord client
 client = discord.Client()
 #test for demations every x seconds(600 for 10 minuets)
-seconds = 300
+seconds = 30
 
 
 
@@ -64,6 +65,7 @@ def findInfo(summonerName):
 async def testplayers():
     while True:
         await asyncio.sleep(seconds)
+        listOfPlayers[0] = ['ckrest', '_D-LLmRUfbmwAQa493vIQ9GrMKdkYQHqW9Z_J2OApkTGPzc', 'DIAMOND', 'IV', 32]
         for x in range(numberOfPlayers):
             testPlayerChange = findInfo(playerNames[x])
             if listOfPlayers[x][2] == testPlayerChange[2] and listOfPlayers[x][3] == testPlayerChange[3]:
@@ -93,11 +95,17 @@ async def testplayers():
                 if cRankValue > pRankValue:
                     #send discord message passing the data
                     client.loop.create_task(printData(pUser, pRank, pLossStreak, pLossKDA))
-                    listOfPlayers[x] = testPlayerChange
                     print(listOfPlayers)
                     print()
+                else:
+                    print('updated players')
+                    print()
+                #update 'listOfPlayers'
+                listOfPlayers[x] = testPlayerChange
 
-        print('done')
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print(current_time)
         print()
 
 #find the loss streak of a player and thier kda during the streak
