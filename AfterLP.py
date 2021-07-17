@@ -20,7 +20,7 @@ watcher = LolWatcher(riotkey)
 #define discord client
 client = discord.Client()
 #test for demations every x seconds(600 for 10 minuets)
-seconds = 30
+seconds = 300
 
 
 
@@ -72,32 +72,33 @@ async def testplayers():
                 print()
             else:
                 print('different rank')
-                lossKDA = findPlayerKDA(listOfPlayers[x][1])
-
-                #make variables readable
-                lossKDAstr = str(str(lossKDA[1][0]) + '/' + str(lossKDA[1][1]) + '/' + str(lossKDA[1][2]))
-
-                if testPlayerChange[2] == 'MASTER' or testPlayerChange[2] == 'GRANDMASTER' or testPlayerChange[2] == 'CHALLENGER':
-                    Rank = str(testPlayerChange[2])
-                else:
-                    Rank = str(str(testPlayerChange[2]) + ' ' + str(testPlayerChange[3]))
-
-                #variables used to print
-                pUser = listOfPlayers[x][0]
-                pRank = Rank
-                pLossStreak = lossKDA[0]
-                pLossKDA = lossKDAstr
 
                 cRankValue = getRankValue(testPlayerChange)
                 pRankValue = getRankValue(listOfPlayers[x])
 
+                #test if rank is up or down
                 if cRankValue > pRankValue:
+
+                    lossKDA = findPlayerKDA(listOfPlayers[x][1])
+
+                    #make variables readable
+                    lossKDAstr = str(str(lossKDA[1][0]) + '/' + str(lossKDA[1][1]) + '/' + str(lossKDA[1][2]))
+
+                    if testPlayerChange[2] == 'MASTER' or testPlayerChange[2] == 'GRANDMASTER' or testPlayerChange[2] == 'CHALLENGER':
+                        Rank = str(testPlayerChange[2])
+                    else:
+                        Rank = str(str(testPlayerChange[2]) + ' ' + str(testPlayerChange[3]))
+
+                    #variables used to print
+                    pUser = listOfPlayers[x][0]
+                    pRank = Rank
+                    pLossStreak = lossKDA[0]
+                    pLossKDA = lossKDAstr
+
                     #send discord message passing the data
                     client.loop.create_task(printData(pUser, pRank, pLossStreak, pLossKDA))
-                    print(listOfPlayers)
-                    print()
                 else:
-                    print('updated players')
+                    print('updated player')
                     print()
                 #update 'listOfPlayers'
                 listOfPlayers[x] = testPlayerChange
@@ -155,7 +156,7 @@ def findPlayerKDA(userID):
 
         return lossStreak, KDAaverage
     else:
-        return
+        return 0, [0,0,0]
 
 #get rankValue from 'listOfPlayers' format
 def getRankValue(playerRankInfo):
@@ -181,7 +182,7 @@ async def printData(User, Rank, LossStreak, LossKDA):
     print('Loss Streak:' + str(LossStreak))
     print('KDA:' + str(LossKDA))
     print()
-    await channel.send('looks good :tada: {} :tada:\nWelcome to {}\nLossStreak:{}\nRecent KDA:{}'.format(User, Rank, LossStreak, LossKDA))
+    await channel.send('looks good :tada: {} :tada:\nWelcome to {}\nLossStreak: {}\nRecent KDA: {}'.format(User, Rank, LossStreak, LossKDA))
 
 #ready check
 @client.event
